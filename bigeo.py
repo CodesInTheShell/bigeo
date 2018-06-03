@@ -231,7 +231,7 @@ class CentroidCreator():
 
 
 class RepresentativePointCreator():
-    """ A class for creating centroids from a polygon shp file. """
+    """ A class for creating Representative Point from a polygon shp file. """
 
 
     def getRepresentativePoint(self, srcfile, outfile):
