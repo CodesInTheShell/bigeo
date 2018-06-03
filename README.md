@@ -1,6 +1,13 @@
 # bigeo
 Python based software developed for automated geospatial processing.
 
+Bigeo is a python based software developed for automated geospatial processing.
+Bigeo comes along with automated processing algorithms that can be run via command line.
+See documentation bigeo HOW TOs
+
+Bigeo can also be imported as a third party library.
+Refer to bigeo library documentation.
+
 
 Bigeo HOW TO’s
 =========================
