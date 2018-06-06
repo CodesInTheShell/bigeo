@@ -54,6 +54,8 @@ import os
 import argparse
 from fiona.crs import from_epsg
 from shapely.geometry import Point, Polygon, shape, mapping
+import json
+import requests
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s :    %(message)s')
 
@@ -277,6 +279,93 @@ class RepresentativePointCreator():
 
                     logging.info("Done creating Representative Point for all features. Writing to the specified output file.")
 
+class OpenWeather():
+    """ Class for requesting weather data from open weather and creates a shapefile with that data on its location."""
+
+    def getWeather(self, path_ids_file, ow_api, outputshp):
+        """
+        Requests for the current weather data to openweather.com and generates a shapefile.
+
+        IMPORTANT: This requires api key from openweather. Please register for a free account.
+        
+        PARAMETER(S):
+
+        : path_ids_file : Path to a file consist of city ids separated by comma with no spaces. (Ex: 1701668,7521309,1724089) See openweather documentation for city ids. 
+
+        : ow_api : Your api key from openweather.
+
+        : outputshp : Output Shapefile.
+
+        EXAMPLE(S):
+
+        import bigeo
+        ow = bigeo.OpenWeather()
+        ow.getWeather('/home/openweather_id.txt', '462c34bsdgddgded8643643f352a', "/home/output_weather/wx.shp")
+
+        """
+
+        logging.info("Reading file for city ids: " + path_ids_file)
+
+        f = open(path_ids_file,"r")        
+
+        self.api_id = ow_api
+
+        self.ids_txt = f.readline().strip()
+
+        self.outputshp = outputshp
+
+        logging.info("City ids found: " + str(f.readline().strip()))
+
+        logging.info("Requesting using API KEY: " + self.api_id)
+
+        logging.info('Request URL: '+'http://api.openweathermap.org/data/2.5/group?id={ids}&APPID={appid}&units=metric'.format(ids=self.ids_txt, appid=self.api_id))
+
+        self.r = requests.get('http://api.openweathermap.org/data/2.5/group?id={ids}&APPID={appid}&units=metric'.format(ids=self.ids_txt, appid=self.api_id))
+
+        logging.info("Recieved weather response.") 
+
+        wx_json = self.r.json()
+
+        crs = from_epsg(4326)
+
+        schema = {
+                'geometry': 'Point',
+                'properties': 
+                        {
+                          'city' :'str', 
+                          'humidity': 'int',
+                          'pressure': 'int',
+                          'temp': 'int',
+                          'weather_de': 'str',
+                          'wind_dir': 'float',
+                          'wind_speed': 'float', 
+                        }
+                    }
+
+        logging.info("Creating output shapefile: " + self.outputshp)
+
+        with fiona.open(self.outputshp, 'w', crs=crs, schema=schema, driver="ESRI Shapefile") as shpfile:
+
+            for i in wx_json['list']:
+
+                point = {u"type": u"Point", u"coordinates": [i['coord']['lon'], i['coord']['lat']]}
+                properties = {
+                              'city' : i['name'], 
+                              'humidity': i['main']['humidity'],
+                              'pressure': i['main']['pressure'],
+                              'temp': i['main']['temp'],
+                              'weather_de': i['weather'][0]['main'],
+                              'wind_dir': i['wind']['deg'],
+                              'wind_speed': i['wind']['speed'],
+                            }
+
+                shpfile.write({'geometry': point, 'properties': properties})
+
+        logging.info("Writing output shapefile: " + self.outputshp)
+        logging.info("Closing file: " + path_ids_file)        
+        f.close()
+
+
 ####################### END SECTION FOR CLASSES ##########################
 
 
@@ -363,6 +452,15 @@ def __run_representativepoint():
 
     rp.getRepresentativePoint(args.srcfile, args.outfile)
 
+def __run_openweather():
+
+    logging.info("Running openweather algorithm.")
+
+    ow = OpenWeather()
+
+    ow.getWeather(args.path_ids_file, args.ow_api, args.outputshp)
+
+
 
 #################### END SECTION FOR RUNNING PROCESSING FUNCTIONS #####################
 
@@ -384,6 +482,9 @@ def main(algo):
     elif algo == 'representativepoint':
         __run_representativepoint()
 
+    elif algo == 'openweather':
+        __run_openweather()
+
     else:
         logging.error('Unkown algorithm: ' + algo)
 
@@ -402,6 +503,12 @@ if __name__ == "__main__":
     parser.add_argument("--srcfile", help="Source shapefile.")
 
     parser.add_argument("--outfile", help="Output shapefile.")
+
+    parser.add_argument("--path_ids_file", help="Open weather city ids text file.")
+
+    parser.add_argument("--ow_api", help="Your open weather API key.")
+
+    parser.add_argument("--outputshp", help="Output openweather shapefile.")
 
     args = parser.parse_args()
 
