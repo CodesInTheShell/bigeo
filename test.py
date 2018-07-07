@@ -58,25 +58,30 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s :   
 #         rp.getRepresentativePoint('/home/dantex/Documents/DEVELOPMENTS/Test Data/Basic Test Data/polygon.shp', \
 #             '/home/dantex/Documents/DEVELOPMENTS/Test Data/Basic Test Data/outdir/reppoints.shp')
 
-class Test_OpenWeather(unittest.TestCase):    
+# class Test_OpenWeather(unittest.TestCase):    
     
-    def test_getWeather(self):
+#     def test_getWeather(self):
 
-        logging.info("Note: Use your own test data for this test.")
+#         logging.info("Note: Use your own test data for this test.")
 
-        ow = bigeo.OpenWeather()
+#         ow = bigeo.OpenWeather()
 
-        ow.getWeather('/home/dantex/Documents/DEVELOPMENTS/Test Data/openweather_id.txt', 'BLEH', "/home/dantex/Documents/DEVELOPMENTS/Test Data/output_weather/wx.shp")
+#         ow.getWeather('/home/dantex/Documents/DEVELOPMENTS/Test Data/openweather_id.txt', 'BLEH', "/home/dantex/Documents/DEVELOPMENTS/Test Data/output_weather/wx.shp")
 
-    # def test_writeWeather(self):
 
-    #     ow = bigeo.OpenWeather()
-    #     ow.write_wx()
+class Test_SnapLineToPoints(unittest.TestCase):
 
-    
+    def test_snapLineToPoints(self):
 
+        snapper = bigeo.SnapLineToPoints()
+
+        snapper.snapLineToPoints('/home/dantex/Documents/DEVELOPMENTS/Test Data/Basic Test Data/point.shp', \
+            '/home/dantex/Documents/DEVELOPMENTS/Test Data/Basic Test Data/unsnap_line.shp', \
+            '/home/dantex/Documents/DEVELOPMENTS/Test Data/Basic Test Data/outdir')
 
 
 
 if __name__ == '__main__':
     unittest.main()
+
+    

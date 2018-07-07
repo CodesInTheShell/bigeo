@@ -3,7 +3,7 @@
           "DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>bigeo.OpenWeather</title>
+  <title>bigeo.SnapLineToPoints</title>
   <link rel="stylesheet" href="epydoc.css" type="text/css" />
   <script type="text/javascript" src="epydoc.js"></script>
 </head>
@@ -43,7 +43,7 @@
     <td width="100%">
       <span class="breadcrumbs">
         <a href="bigeo-module.html">Module&nbsp;bigeo</a> ::
-        Class&nbsp;OpenWeather
+        Class&nbsp;SnapLineToPoints
       </span>
     </td>
     <td>
@@ -53,16 +53,15 @@
     onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
         <tr><td align="right"><span class="options"
             >[<a href="frames.html" target="_top">frames</a
-            >]&nbsp;|&nbsp;<a href="bigeo.OpenWeather-class.html"
+            >]&nbsp;|&nbsp;<a href="bigeo.SnapLineToPoints-class.html"
             target="_top">no&nbsp;frames</a>]</span></td></tr>
       </table>
     </td>
   </tr>
 </table>
 <!-- ==================== CLASS DESCRIPTION ==================== -->
-<h1 class="epydoc">Class OpenWeather</h1><p class="nomargin-top"><span class="codelink"><a href="bigeo-pysrc.html#OpenWeather">source&nbsp;code</a></span></p>
-<p>Class for requesting weather data from open weather and creates a 
-  shapefile with that data on its location.</p>
+<h1 class="epydoc">Class SnapLineToPoints</h1><p class="nomargin-top"><span class="codelink"><a href="bigeo-pysrc.html#SnapLineToPoints">source&nbsp;code</a></span></p>
+<p>Class to snap lines to points.</p>
 
 <!-- ==================== INSTANCE METHODS ==================== -->
 <a name="section-InstanceMethods"></a>
@@ -87,14 +86,13 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="bigeo.OpenWeather-class.html#getWeather" class="summary-sig-name">getWeather</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">path_ids_file</span>,
-        <span class="summary-sig-arg">ow_api</span>,
-        <span class="summary-sig-arg">outputshp</span>)</span><br />
-      Requests for the current weather data to openweather.com and 
-      generates a shapefile.</td>
+          <td><span class="summary-sig"><a name="snapLineToPoints"></a><span class="summary-sig-name">snapLineToPoints</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">pointshp</span>,
+        <span class="summary-sig-arg">lineshp</span>,
+        <span class="summary-sig-arg">outshpdir</span>)</span><br />
+      Function to snap lines to points.</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="bigeo-pysrc.html#OpenWeather.getWeather">source&nbsp;code</a></span>
+            <span class="codelink"><a href="bigeo-pysrc.html#SnapLineToPoints.snapLineToPoints">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -103,60 +101,6 @@
     </td>
   </tr>
 </table>
-<!-- ==================== METHOD DETAILS ==================== -->
-<a name="section-MethodDetails"></a>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr bgcolor="#70b0f0" class="table-header">
-  <td colspan="2" class="table-header">
-    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-      <tr valign="top">
-        <td align="left"><span class="table-header">Method Details</span></td>
-        <td align="right" valign="top"
-         ><span class="options">[<a href="#section-MethodDetails"
-         class="privatelink" onclick="toggle_private();"
-         >hide private</a>]</span></td>
-      </tr>
-    </table>
-  </td>
-</tr>
-</table>
-<a name="getWeather"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">getWeather</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">path_ids_file</span>,
-        <span class="sig-arg">ow_api</span>,
-        <span class="sig-arg">outputshp</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="bigeo-pysrc.html#OpenWeather.getWeather">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Requests for the current weather data to openweather.com and generates
-  a shapefile.</p>
-  <p>IMPORTANT: This requires api key from openweather. Please register for
-  a free account.</p>
-  <p>PARAMETER(S):</p>
-  <p>: path_ids_file : Path to a file consist of city ids separated by 
-  comma with no spaces. (Ex: 1701668,7521309,1724089) See openweather 
-  documentation for city ids.</p>
-  <p>: ow_api : Your api key from openweather.</p>
-  <p>: outputshp : Output Shapefile.</p>
-  <p>EXAMPLE(S):</p>
-  <p>import bigeo ow = bigeo.OpenWeather() 
-  ow.getWeather('/home/openweather_id.txt', '462c34bsdgddgded8643643f352a',
-  &quot;/home/output_weather/wx.shp&quot;)</p>
-  <dl class="fields">
-  </dl>
-</td></tr></table>
-</div>
-<br />
 <!-- ==================== NAVIGATION BAR ==================== -->
 <table class="navbar" border="0" width="100%" cellpadding="0"
        bgcolor="#a0c0ff" cellspacing="0">

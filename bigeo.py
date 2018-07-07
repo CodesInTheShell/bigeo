@@ -53,9 +53,11 @@ import logging
 import os
 import argparse
 from fiona.crs import from_epsg
-from shapely.geometry import Point, Polygon, shape, mapping
+from shapely.geometry import Point, Polygon, shape, mapping, LineString
+from shapely.ops import cascaded_union
 import json
 import requests
+import matplotlib.pyplot as plt
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s :    %(message)s')
 
@@ -65,7 +67,6 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s :   
 
 class Reprojector:
     """ Class for reprojecting shp files."""
-
 
     def reproject(self, inshpdir, outshpdir, crs):
         """ 
@@ -89,7 +90,6 @@ class Reprojector:
         reproj.reproject("home/path/unprojecteddirectory" , "home/path/projecteddirectory", 'EPSG:4326')
 
         """
-
 
         self.inshpdir = inshpdir
 
@@ -279,6 +279,7 @@ class RepresentativePointCreator():
 
                     logging.info("Done creating Representative Point for all features. Writing to the specified output file.")
 
+
 class OpenWeather():
     """ Class for requesting weather data from open weather and creates a shapefile with that data on its location."""
 
@@ -364,6 +365,54 @@ class OpenWeather():
         logging.info("Writing output shapefile: " + self.outputshp)
         logging.info("Closing file: " + path_ids_file)        
         f.close()
+
+
+class SnapLineToPoints():
+    """ Class to snap lines to points. """
+
+    # object.convex_hull
+
+    def snapLineToPoints(self, pointshp, lineshp, outshpdir):
+        """
+        Function to snap lines to points.
+        """
+        pass
+
+
+# TODO
+class DuplicatesRemover():
+    # Class to remove duplicates in shapefiles
+    # Might just use set() function of python
+    pass
+
+# TODO
+class PolygonOverlapsRemover():
+    # Class to remove overlaps in polygons
+    pass
+
+# TODO
+class BufferCreator():
+    # Class to create a fixed distance buffer
+    pass
+
+# TODO
+class InvalidGeomRemover():
+    # Class to check for invalid geometries
+    # might use shapely is_valid and validation.explain_validity(object)
+    # buffer(0) will remove invalid geoms. Be cautious as tiny polygons might be created
+    pass
+
+# TODO
+class MultipartToSinglepart():
+    # Convert multipart to singlepart
+    pass
+
+# TODO
+class FieldTypeRemover():
+    # Removes unnecessary fields accordin to type. (ex. DATE TYPE FIELD)
+    pass
+
+# TODO
 
 
 ####################### END SECTION FOR CLASSES ##########################
@@ -458,7 +507,7 @@ def __run_openweather():
 
     ow = OpenWeather()
 
-    ow.getWeather(args.path_ids_file, args.ow_api, args.outputshp)
+    ow.getWeather(args.path_ids_file, args.ow_api, args.outfile)
 
 
 
@@ -498,7 +547,7 @@ if __name__ == "__main__":
 
     parser.add_argument("--outdir", help="Directory to store the reprojected shapefiles.")
 
-    parser.add_argument("--crs", help="CRS to use. See fiona documentation for crs available")
+    parser.add_argument("--crs", help="CRS string to use. See fiona documentation for crs available")
 
     parser.add_argument("--srcfile", help="Source shapefile.")
 
@@ -508,7 +557,6 @@ if __name__ == "__main__":
 
     parser.add_argument("--ow_api", help="Your open weather API key.")
 
-    parser.add_argument("--outputshp", help="Output openweather shapefile.")
 
     args = parser.parse_args()
 
